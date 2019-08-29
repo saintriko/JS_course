@@ -11,24 +11,23 @@
 // isEmpty([[], []]) === false
 
 // Ниже функции, в комментарии, описать случая, которые были использованы для тестирования
-let valueToCheck;
 
 function isEmpty(valueToCheck) {
     let result;
     let typeOfValue = typeof(valueToCheck);
-    if (typeOfValue == "undefined") {
-        result = true;
-    } else if (typeOfValue = "number") {
+    if (typeOfValue === "undefined") {
+        result = true
+    } else if (typeOfValue === "number") {
         if (isNaN(valueToCheck)) {
             result = true
-        } else {
-            result = false;
         }
-        // check isObject, array
+        result = false
+    } else if (valueToCheck === "") {
+        result = true
+    } else if (valueToCheck == null) {
+        result = true
     } else {
-        result = false;
+        result = false
     }
-
-
     return result;
 }
