@@ -31,15 +31,16 @@
 */
 
 function isSameStructure(objectToCheck) {
-    let result:
-    
-    // Тут код
-    
+    let result;
+    if (typeof objectToCheck !== "object") {
+        result = false;
+    } else {
+        if (typeof(objectToCheck.name) === "string" && typeof(objectToCheck.id) === "number" && Array.isArray(objectToCheck.achievments) && typeof(objectToCheck.avatarURL) === "string"
+            || typeof(objectToCheck.error) === "boolean" && typeof(objectToCheck.code) === "number" && (typeof(objectToCheck.message) === "string" || typeof(objectToCheck.message) === "undefined")) {
+            result = true
+        } else {
+            result = false
+        }
+    }
     return result;
 }
-
-// Примеры
-// isSameStructure({}) === false
-// isSameStructure(12) === false;
-// isSameStructure({error: true, code: 404}) === true
-// isSameStructure({name: "John Doe", id: 127543, avatarURL: "https://example.com/image/127543.webp"}) === false;
