@@ -12,22 +12,15 @@
 
 // Ниже функции, в комментарии, описать случая, которые были использованы для тестирования
 
+
 function isEmpty(valueToCheck) {
     let result;
-    let typeOfValue = typeof(valueToCheck);
-    if (typeOfValue === "undefined") {
-        result = true
-    } else if (typeOfValue === "number") {
-        if (isNaN(valueToCheck)) {
-            result = true
-        }
+    if (typeof(valueToCheck) === "number" && valueToCheck == 0) {
         result = false
-    } else if (valueToCheck === "") {
-        result = true
-    } else if (valueToCheck == null) {
-        result = true
+    } else if (typeof(valueToCheck) === "boolean") {
+        result = false
     } else {
-        result = false
+        result = valueToCheck ? false : true
     }
     return result;
 }
