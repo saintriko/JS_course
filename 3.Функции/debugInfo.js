@@ -7,3 +7,21 @@
 // Необходимо написать функцию withDegubInfo(), которая будет принимать единственным аргументом функцию,
 // и модифициовать её таким образом, чтобы при её вызове в консоль браузера выводилось сообщение по такому шаблону:
 // <имя функции; время вызова; массив аргументов>
+
+function withDebugInfo(calledFunction) {
+    return function (...args) {
+        let date = new Date()
+        console.log("<", calledFunction.name, ";",
+            date.toTimeString(), ";",
+            args, ">")
+        return calledFunction.apply(this, args)
+    }
+}
+
+function summarize(...args) {
+    return args.reduce((first, next) => {
+        return first + next
+    })
+};
+
+console.log(withDebugInfo(summarize)(1, 2, 3))
