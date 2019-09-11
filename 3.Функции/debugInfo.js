@@ -9,6 +9,9 @@
 // <имя функции; время вызова; массив аргументов>
 
 function withDebugInfo(calledFunction) {
+    if (typeof (calledFunction) !== "function") {
+        return Error
+    }
     return function (...args) {
         let date = new Date()
         console.log("<", calledFunction.name, ";",
