@@ -9,47 +9,33 @@
 // которая будет выполнять необходимую операцию над двумя числами и возвращат результат
 
 function getSign(sign) {
-    switch (sign) {
-        case "+":
-            return ((firstElem, secondElem) => {
-                return firstElem + secondElem
-            })
-        case "-":
-            return ((firstElem, secondElem) => {
-                return firstElem - secondElem
-            })
-        case "/":
-            return ((firstElem, secondElem) => {
-                return firstElem / secondElem
-            })
-        case "*":
-            return ((firstElem, secondElem) => {
-                return firstElem * secondElem
-            })
-        case "%":
-            return ((firstElem, secondElem) => {
-                return firstElem % secondElem
-            })
-        case "**":
-            return ((firstElem, secondElem) => {
-                return firstElem ** secondElem
-            })
-        default:
-            return undefined
+    if (sign == "+") {
+        return ((firstElem, secondElem) =>
+            firstElem + secondElem);
     }
+    if (sign == "-") {
+        return ((firstElem, secondElem) =>
+            firstElem - secondElem)
+    }
+    if (sign == "/") {
+        return ((firstElem, secondElem) =>
+            firstElem / secondElem)
+    }
+    if (sign == "*") {
+        return ((firstElem, secondElem) =>
+            firstElem * secondElem)
+    }
+    return undefined
 }
 
-function performMathOperation(sign, ...numbers) {
-    var result;
+function performMathOperation(sign, firstOperand, ...numbers) {
     var operation = getSign(sign);
-    numbers.forEach(function (elem) {
-        if (typeof (elem) !== "number" || operation == undefined) {
-            result = "error"
-        }
-    })
-
-    if (result !== "error" && numbers.length > 0 ) {
-        result = numbers.reduce((sum, number) => operation(sum, number))
+    if (typeof(firstOperand) === "number" && operation !== undefined) {
+        return numbers.reduce((sum, number) => typeof number === "number" ? operation(sum, number) : null
+            , firstOperand)
+    } else {
+        throw new Error('Error');
     }
-    return result;
 }
+
+console.log(performMathOperation("+", 1, 2, 3))

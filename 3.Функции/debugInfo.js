@@ -10,21 +10,20 @@
 
 function withDebugInfo(calledFunction) {
     if (typeof (calledFunction) !== "function") {
-        return Error
+        throw new Error('Not a function');
     }
     return function (...args) {
-        let date = new Date()
-        console.log("<", calledFunction.name, ";",
-            date.toTimeString(), ";",
-            args, ">")
-        return calledFunction.apply(this, args)
+        console.log(`<${calledFunction.name}; ${new Date().toTimeString()}; ${args}>`);
+        return calledFunction(...args);
     }
 }
 
 function summarize(...args) {
-    return args.reduce((first, next) => {
-        return first + next
-    })
+    let result = 0;
+    for (const i in args) {
+        result = result + args[i];
+    }
+    return result;
 };
 
-console.log(withDebugInfo(summarize)(1, 2, 3))
+console.log(withDebugInfo(summarize)(1, 2, 3, 4, 5));
