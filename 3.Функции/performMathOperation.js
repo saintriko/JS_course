@@ -10,32 +10,37 @@
 
 function getSign(sign) {
     if (sign == "+") {
-        return ((firstElem, secondElem) =>
-            firstElem + secondElem);
+        return (firstElem, secondElem) => firstElem + secondElem;
     }
     if (sign == "-") {
-        return ((firstElem, secondElem) =>
-            firstElem - secondElem)
+        return (firstElem, secondElem) => firstElem - secondElem;
     }
     if (sign == "/") {
-        return ((firstElem, secondElem) =>
-            firstElem / secondElem)
+        return (firstElem, secondElem) => firstElem / secondElem;
     }
     if (sign == "*") {
-        return ((firstElem, secondElem) =>
-            firstElem * secondElem)
+        return (firstElem, secondElem) => firstElem * secondElem;
     }
-    return undefined
+    return undefined;
 }
 
 function performMathOperation(sign, firstOperand, ...numbers) {
-    var operation = getSign(sign);
+    let operation = getSign(sign);
     if (typeof(firstOperand) === "number" && operation !== undefined) {
-        return numbers.reduce((sum, number) => typeof number === "number" ? operation(sum, number) : null
-            , firstOperand)
-    } else {
-        throw new Error('Error');
+        let result = firstOperand;
+        numbers.forEach((number) => {
+                if (typeof number !== "number" || isNaN(number)) {
+                    throw new Error('Expected number');
+                } else {
+                    result = operation(result, number);
+                }
+            }
+        )
+        return result;
+    }
+    else {
+        throw new Error('Error. Expected: (sign, numbers)');
     }
 }
 
-console.log(performMathOperation("+", 1, 2, 3))
+console.log(performMathOperation("*", 2, 1, 20))
