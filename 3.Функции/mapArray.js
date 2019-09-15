@@ -6,9 +6,10 @@ function mapArray(array, callbackFunction) {
     if (!Array.isArray(array) || typeof(callbackFunction) !== "function") {
         throw new Error("Expected: array, function")
     }
-    let resultArray = [];
+    const resultArray = [];
     for (let i = 0; i < array.length; i++) {
-        resultArray.push(callbackFunction.call(this, array[i], i, array))
+        resultArray.push(callbackFunction(array[i], i, array))
+
     }
     return resultArray;
 }
