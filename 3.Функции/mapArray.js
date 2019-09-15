@@ -12,11 +12,3 @@ function mapArray(array, callbackFunction) {
     }
     return resultArray;
 }
-
-function multiplyOnIndex(number, index) {
-    return number * index;
-}
-
-var originalArray = [1, 2, 3, 4, 5, 6]
-console.log(`Original array [${originalArray}]`)
-console.log(mapArray([1,2], multiplyOnIndex))
