@@ -8,6 +8,10 @@ function makeInteractive(section) {
         pictures.currentPic = pictures[pictures.index + 1]
         pictures.index =  pictures.index + 1 ;
     };
+    pictures.prev = () => {
+        pictures.currentPic = pictures[pictures.index - 1]
+        pictures.index =  pictures.index - 1 ;
+    };
     return pictures;
 }
 

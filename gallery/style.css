@@ -3,8 +3,33 @@
     margin: 0;
     padding: 0;
 }
+.wrapper
+{
+    max-width: 800px;
+    height: 600px;
+    overflow: hidden;
+}
 
 .image_section
 {
-    width: 800px;
+    box-sizing:content-box;
+    width: 3200px;
+    transition: all 200ms ease-out 0s;
+    transform: translate3d(0px, 0px, 0px);
+}
+
+.slide
+{
+    float: left;
+    width: 25%;
+}
+
+.pic
+{
+    width: 100%;
+}
+
+img
+{
+    height: auto;
 }
