@@ -28,5 +28,5 @@ function makeInteractive(section) {
 gallery = makeInteractive(section)
 console.log(gallery);
 
-document.getElementsByClassName('next')[0].addEventListener( "click" , () => gallery.next());
-document.getElementsByClassName('prev')[0].addEventListener( "click" , () => gallery.prev());
+document.getElementsByClassName('next')[0].addEventListener("click", () => gallery.next());
+document.getElementsByClassName('prev')[0].addEventListener("click", () => gallery.prev());
