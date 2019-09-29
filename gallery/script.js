@@ -1,21 +1,32 @@
 var section = document.getElementsByClassName('image_section')[0];
-var translate3dX= '-800px';
-section.style.transform = `translate3d(${translate3dX}, 0px, 0px)`;
-console.log(section.style.transform)
+
 function makeInteractive(section) {
-    let pictures = new Object(section.children);
-    pictures.index = 0;
-    pictures.currentPic = pictures[pictures.index];
-    pictures.next = () => {
-        pictures.currentPic = pictures[pictures.index + 1]
-        pictures.index =  pictures.index + 1 ;
-    };
-    pictures.prev = () => {
-        pictures.currentPic = pictures[pictures.index - 1]
-        pictures.index =  pictures.index - 1 ;
-    };
-    return pictures;
+    const numberOfPictures = section.children.length;
+    let translate3dX = 0;
+    let currentPicture = 0;
+    section.style.transform = `translate3d(${translate3dX}px, 0px, 0px)`;
+    let obj = {}
+    obj.next = () => {
+        if (currentPicture < numberOfPictures - 1) {
+            translate3dX = translate3dX - 800;
+            section.style.transform = `translate3d(${translate3dX}px, 0px, 0px)`;
+            currentPicture++;
+        }
+        return currentPicture;
+    }
+    obj.prev = () => {
+        if (currentPicture > 0) {
+            translate3dX = translate3dX + 800;
+            section.style.transform = `translate3d(${translate3dX}px, 0px, 0px)`;
+            currentPicture--;
+        }
+        return currentPicture;
+    }
+    return obj;
 }
 
 gallery = makeInteractive(section)
 console.log(gallery);
+
+document.getElementsByClassName('next')[0].addEventListener( "click" , () => gallery.next());
+document.getElementsByClassName('prev')[0].addEventListener( "click" , () => gallery.prev());
