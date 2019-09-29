@@ -8,20 +8,22 @@
     max-width: 800px;
     height: 600px;
     overflow: hidden;
+    margin: 0 auto;
+    padding-top: 50px;
 }
 
 .image_section
 {
     box-sizing:content-box;
     width: 3200px;
-    transition: all 200ms ease-out 0s;
+    transition: all 400ms ease-out 0s;
     transform: translate3d(0px, 0px, 0px);
 }
 
 .slide
 {
     float: left;
-    width: 25%;
+    /*width: 25%;*/
 }
 
 .pic
