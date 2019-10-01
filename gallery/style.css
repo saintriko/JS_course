@@ -22,8 +22,8 @@
 .image_section
 {
     box-sizing: content-box;
-    width: 8000px;
-    transition: all 300ms ease-out 0s;
+    width: 800px;
+    transition: all 200ms ease-out 0s;
     transform: translate3d(0px, 0px, 0px);
 }
 
