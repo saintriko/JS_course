@@ -19,8 +19,12 @@ function makeInteractive(section) {
     obj.prev = () => {
         if (currentPicture == 0) {
             section.insertBefore(section.children[3], section.firstChild,);
-
+            // section.style.transition = `all 0ms ease-out 0s`;
+            translate3dX = translate3dX - pictureWide;
+            section.style.transform = `translate3d(${translate3dX}px, 0px, 0px)`;
+            currentPicture = 1;
         }
+
         translate3dX = translate3dX + pictureWide;
         section.style.transform = `translate3d(${translate3dX}px, 0px, 0px)`;
         currentPicture--;
