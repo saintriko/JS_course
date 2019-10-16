@@ -17,7 +17,6 @@ function makeInteractive(section) {
             numberOfPictures++;
             section.style.width = numberOfPictures * pictureWide + "px";
         }
-        return;
     }
     obj.prev = () => {
         if (currentPicture === 0) {
@@ -29,7 +28,6 @@ function makeInteractive(section) {
         translate3dX = translate3dX + pictureWide;
         section.style.transform = `translate3d(${translate3dX}px, 0px, 0px)`;
         currentPicture--;
-        return console.log(currentPicture);
     }
     return obj;
 }
