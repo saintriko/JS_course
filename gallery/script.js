@@ -1,42 +1,59 @@
-function makeInteractive(section) {
-    let numberOfPictures = section.children.length;
-    let firstChild = section.firstElementChild;
-    let lastChild = section.lastElementChild;
-    section.appendChild(firstChild.cloneNode(true));
-    section.insertBefore(lastChild.cloneNode(true), firstChild);
-    const pictureWide = 800;
-    section.style.width = (numberOfPictures + 2) * pictureWide + "px";
-    let translate3dX = 0;
-    let currentPicture = 0;
-    let obj = {};
-
-    obj.next = () => {
-        translate3dX = translate3dX - pictureWide;
-        section.style.transform = `translate3d(${translate3dX}px, 0px, 0px)`;
-        currentPicture++;
-        if (currentPicture === numberOfPictures - 1) {
-            // section.appendChild(section.children[currentPicture + 1 - numberOfOriginalPic].cloneNode(true));
-            // console.log(currentPicture - 3);
-            // numberOfPictures++;
-            // section.style.width = numberOfPictures * pictureWide + "px";
-        }
-    }
-    obj.prev = () => {
-        if (currentPicture === 0) {
-            // section.insertBefore(section.children[numberOfPictures - 1], section.firstChild,);
-            // translate3dX = translate3dX - pictureWide;
-            // section.style.transform = `translate3d(${translate3dX}px, 0px, 0px)`;
-            // currentPicture = 1;
-        }
-        translate3dX = translate3dX + pictureWide;
-        section.style.transform = `translate3d(${translate3dX}px, 0px, 0px)`;
-        currentPicture--;
-    }
-    return obj;
+function translateOn(section) {
+    let translate3dX = -800;
+    return (delta) => {
+        translate3dX = translate3dX + delta;
+        section.style.setProperty('transform', `translate3d(${translate3dX}px, 0px, 0px)`);
+    };
 }
 
-var section = document.getElementsByClassName('image_section')[0];
+function makeInteractive(section) {
+    const firstChild = section.firstElementChild;
+    const lastChild = section.lastElementChild;
+    const pictureWide = 800;
+    section.appendChild(firstChild.cloneNode(true));
+    section.insertBefore(lastChild.cloneNode(true), firstChild);
+    const numberOfPictures = section.children.length;
+    section.style.setProperty('width', `${(numberOfPictures) * pictureWide}px` );
+    let currentPicture = 1;
+    let setTranslate = translateOn(section);
+    const next = () => {
+        if (currentPicture === numberOfPictures - 2) {
+            setTranslate(-800);
+            setTimeout(() => {
+                    section.style.setProperty('transition', "none");
+                    setTranslate(pictureWide * (numberOfPictures - 2));
+                    currentPicture = 1;
+                    setTimeout(() => {
+                        section.style.setProperty('transition', "all 200ms ease-out 0s");
+                    }, 50)
+                }
+                , 200);
+            return;
+        }
+        setTranslate(-800);
+        currentPicture++;
+    };
+    const prev = () => {
+        if (currentPicture === 1) {
+            setTranslate(800);
+            setTimeout(() => {
+                section.style.setProperty('transition', "none");
+                setTranslate(-pictureWide * (numberOfPictures - 2));
+                currentPicture = numberOfPictures - 2;
+                setTimeout(() => {
+                    section.style.setProperty('transition', "all 200ms ease-out 0s");
+                }, 50)
+            }, 200);
+            return;
+        }
+        setTranslate(800);
+        currentPicture--;
+    };
+    return {next, prev};
+}
 
-gallery = makeInteractive(section);
-document.getElementsByClassName('next')[0].addEventListener("click", () => gallery.next());
-document.getElementsByClassName('prev')[0].addEventListener("click", () => gallery.prev());
+const section = document.querySelector('.image_section');
+
+const gallery = makeInteractive(section);
+document.querySelector('.next').addEventListener("click", () => gallery.next());
+document.querySelector('.prev').addEventListener("click", () => gallery.prev());
