@@ -1,5 +1,5 @@
 function translateOn(section, pictureWide) {
-    let translate3dX = -pictureWide;
+    let translate3dX = 0;
     return (delta) => {
         translate3dX = translate3dX + delta;
         section.style.setProperty('transform', `translate3d(${translate3dX}px, 0px, 0px)`);
@@ -26,6 +26,8 @@ function makeInteractive(section) {
     section.style.setProperty('width', `${numberOfPictures * pictureWide}px`);
     let currentPicture = 1;
     const setTranslate = translateOn(section, pictureWide);
+    setTranslate(-800);
+    setTimeout(() => {section.style.setProperty('transition', "all 200ms ease-out 0s")});
 
     const next = () => {
         if (currentPicture === numberOfPictures - 2) {

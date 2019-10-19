@@ -23,8 +23,7 @@
 {
     box-sizing: content-box;
     width: 800px;
-    transition: all 200ms ease-out 0s;
-    transform: translate3d(-800px, 0px, 0px);
+    transform: translate3d(0px, 0px, 0px);
 }
 
 .slide
@@ -46,7 +45,7 @@ img
 .prev
 {
     position: absolute;
-    height: 800px;
+    height: 100%;
     width: 70px;
     top: 0;
     left: 0;
@@ -58,7 +57,7 @@ img
 .next
 {
     position: absolute;
-    height: 800px;
+    height: 100%;
     width: 70px;
     top: 0;
     right: 0;
