@@ -9,8 +9,8 @@ function translateOn(section, pictureWide) {
 function swipeAnimation(delay) {
     return (setTranslate, pictureWide) => {
         setTimeout(() => {
-        section.style.setProperty('transition', "all 200ms ease-out 0s");
-        setTranslate(pictureWide);
+            section.style.setProperty('transition', "all 200ms ease-out 0s");
+            setTranslate(pictureWide);
         }, delay);
     }
 }
@@ -27,7 +27,9 @@ function makeInteractive(section) {
     let currentPicture = 1;
     const setTranslate = translateOn(section, pictureWide);
     setTranslate(-800);
-    setTimeout(() => {section.style.setProperty('transition', "all 200ms ease-out 0s")});
+    setTimeout(() => {
+        section.style.setProperty('transition', "all 200ms ease-out 0s")
+    });
 
     const next = () => {
         if (currentPicture === numberOfPictures - 2) {
@@ -60,3 +62,24 @@ const section = document.querySelector('.image_section');
 const gallery = makeInteractive(section);
 document.querySelector('.next').addEventListener("click", () => gallery.next());
 document.querySelector('.prev').addEventListener("click", () => gallery.prev());
+
+let x0 = null;
+section.addEventListener('touchstart', lock, false);
+section.addEventListener('touchend', move, false);
+
+
+function lock(e) {
+    x0 = e.changedTouches[0].pageX;
+    console.log(x0);
+};
+
+function move(e) {
+    if (x0 || x0 === 0) {
+        let dx = e.changedTouches[0].pageX - x0;
+        if (dx > 0) {
+            gallery.next();
+        } else if (dx < 0) {
+            gallery.prev();
+        }
+    }
+};
