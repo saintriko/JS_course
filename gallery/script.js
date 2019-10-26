@@ -13,6 +13,23 @@ function defer(setTranslate, pictureWide) {
     }, 50);
 }
 
+function setSwipe(movePicture, numberOfPictures) {
+    let currentPicture = 1;
+
+    return (pictureWide, direction) => {
+        if (direction === "prev") pictureWide = -pictureWide;
+        if (currentPicture === numberOfPictures - 2 && direction === "next" || currentPicture === 1 && direction === "prev") {
+            section.style.setProperty('transition', "none");
+            movePicture(pictureWide * (numberOfPictures - 2));
+            defer(movePicture, -pictureWide);
+            currentPicture = direction === "next" ? 1 : direction === "prev" ? numberOfPictures - 2 : undefined;
+            return;
+        }
+        currentPicture = direction === "next" ? currentPicture + 1 : direction === "prev" ? currentPicture - 1 : undefined;
+        movePicture(-pictureWide);
+    }
+}
+
 function makeInteractive(section) {
     const firstChild = section.firstElementChild;
     const lastChild = section.lastElementChild;
@@ -23,45 +40,27 @@ function makeInteractive(section) {
     const numberOfPictures = section.children.length;
     const pictureWide = 800;
     section.style.setProperty('width', `${numberOfPictures * pictureWide}px`);
-    let currentPicture = 1;
 
     const movePicture = setTranslate(section, pictureWide);
     movePicture(-800);
     setTimeout(() => {
         section.style.setProperty('transition', "all 200ms ease-out 0s")
     });
+    let swipePicture = setSwipe(movePicture, numberOfPictures);
 
     const next = () => {
-        if (currentPicture === numberOfPictures - 2) {
-            section.style.setProperty('transition', "none");
-            movePicture(pictureWide * (numberOfPictures - 2));
-            currentPicture = 1;
-            defer(movePicture, -pictureWide);
-            return;
-        }
-
-        currentPicture++;
-        movePicture(-pictureWide);
+        swipePicture(pictureWide, "next");
     };
 
     const prev = () => {
-        if (currentPicture === 1) {
-            section.style.setProperty('transition', "none");
-            movePicture(-pictureWide * (numberOfPictures - 2));
-            currentPicture = numberOfPictures - 2;
-            defer(movePicture, pictureWide);
-            return;
-        }
-
-        movePicture(pictureWide);
-        currentPicture--;
+        swipePicture(pictureWide, "prev");
     };
 
-    let x0 = null;
     section.addEventListener('touchstart', lock, false);
     section.addEventListener('touchmove', move, false);
     section.addEventListener('touchend', swipe, false);
 
+    let x0 = null;
 
     function lock(e) {
         x0 = e.changedTouches[0].pageX;
@@ -92,5 +91,3 @@ const section = document.querySelector('.image_section');
 const gallery = makeInteractive(section);
 document.querySelector('.next').addEventListener("click", () => gallery.next());
 document.querySelector('.prev').addEventListener("click", () => gallery.prev());
-
-
