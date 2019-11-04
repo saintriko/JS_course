@@ -23,10 +23,11 @@ function setSwipe(movePicture, numberOfPictures) {
             movePicture(pictureWide * (numberOfPictures - 2));
             defer(movePicture, -pictureWide);
             currentPicture = direction === "next" ? 1 : direction === "prev" ? numberOfPictures - 2 : undefined;
-            return;
+            return currentPicture;
         }
         currentPicture = direction === "next" ? currentPicture + 1 : direction === "prev" ? currentPicture - 1 : undefined;
         movePicture(-pictureWide);
+        return currentPicture;
     }
 }
 
@@ -47,38 +48,49 @@ function makeInteractive(section) {
         section.style.setProperty('transition', "all 200ms ease-out 0s")
     });
     let swipePicture = setSwipe(movePicture, numberOfPictures);
+    let currentPicture = 1;
 
     const next = () => {
-        swipePicture(pictureWide, "next");
+        currentPicture = swipePicture(pictureWide, "next");
     };
 
     const prev = () => {
-        swipePicture(pictureWide, "prev");
+        currentPicture = swipePicture(pictureWide, "prev");
     };
 
     section.addEventListener('touchstart', lock, false);
-    section.addEventListener('touchmove', move, false);
+    section.addEventListener('touchmove', drag, false);
     section.addEventListener('touchend', swipe, false);
+
+    function unify(e) {
+        return e.changedTouches ? e.changedTouches[0] : e
+    }
 
     let x0 = null;
 
     function lock(e) {
-        x0 = e.changedTouches[0].pageX;
+        x0 = unify(e).pageX;
     }
 
-    function move(e) {
-        console.log(x0 - e.changedTouches[0].pageX);
+    let delta = null;
+    let translateCurrent = -pictureWide;
 
+    function drag(e) {
+        delta = x0 - unify(e).pageX;
+        console.log(`Delta drag X: ${delta}`);
+        translateCurrent = currentPicture * -pictureWide;
+        let translateDrag = translateCurrent - delta;
+        section.style.setProperty('transform', `translate3d(${translateDrag}px, 0px, 0px)`);
     }
+
+    const dragLimit = 400;
 
     function swipe(e) {
         if (x0 || x0 === 0) {
-            let dx = e.changedTouches[0].pageX - x0;
-
-            if (dx < 0) {
-                gallery.next();
-            } else if (dx > 0) {
-                gallery.prev();
+            if (delta > 0) {
+                if (delta > dragLimit) gallery.next(); else section.style.setProperty('transform', `translate3d(${translateCurrent}px, 0px, 0px)`);
+            } else if (delta < 0) {
+                if (delta < -dragLimit) gallery.prev(); else section.style.setProperty('transform', `translate3d(${translateCurrent}px, 0px, 0px)`);
             }
         }
     }
