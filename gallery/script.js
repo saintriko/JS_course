@@ -59,7 +59,23 @@ function makeInteractive(section) {
     };
 
     section.addEventListener('touchstart', lock, false);
+    section.addEventListener('mousedown', lock, false);
+
     section.addEventListener('touchmove', drag, false);
+    section.addEventListener('mousemove', drag, false);
+
+    section.addEventListener('mouseout', (e) => {
+        if (touching === true) {
+            touching = false;
+            delta = x0 - unify(e).pageX;
+            if (delta > 0) {
+                gallery.next()
+            } else if (delta < 0) {
+                gallery.prev()
+            }
+        }
+    }, false);
+    section.addEventListener('mouseup', swipe, false);
     section.addEventListener('touchend', swipe, false);
 
     function unify(e) {
@@ -67,25 +83,30 @@ function makeInteractive(section) {
     }
 
     let x0 = null;
+    let touching = false;
 
     function lock(e) {
+        e.preventDefault();
         x0 = unify(e).pageX;
+        touching = true;
     }
 
     let delta = null;
     let translateCurrent = -pictureWide;
 
     function drag(e) {
-        delta = x0 - unify(e).pageX;
-        console.log(`Delta drag X: ${delta}`);
-        translateCurrent = currentPicture * -pictureWide;
-        let translateDrag = translateCurrent - delta;
-        section.style.setProperty('transform', `translate3d(${translateDrag}px, 0px, 0px)`);
+        e.preventDefault();
+        if (touching === true) {
+            delta = x0 - unify(e).pageX;
+            translateCurrent = currentPicture * -pictureWide;
+            let translateDrag = translateCurrent - delta;
+            section.style.setProperty('transform', `translate3d(${translateDrag}px, 0px, 0px)`);
+        }
     }
 
     const dragLimit = 400;
 
-    function swipe(e) {
+    function swipe() {
         if (x0 || x0 === 0) {
             if (delta > 0) {
                 if (delta > dragLimit) gallery.next(); else section.style.setProperty('transform', `translate3d(${translateCurrent}px, 0px, 0px)`);
@@ -93,6 +114,7 @@ function makeInteractive(section) {
                 if (delta < -dragLimit) gallery.prev(); else section.style.setProperty('transform', `translate3d(${translateCurrent}px, 0px, 0px)`);
             }
         }
+        touching = false;
     }
 
     return {next, prev};
