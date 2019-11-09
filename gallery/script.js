@@ -64,17 +64,7 @@ function makeInteractive(section) {
     section.addEventListener('touchmove', drag, false);
     section.addEventListener('mousemove', drag, false);
 
-    section.addEventListener('mouseout', (e) => {
-        if (touching === true) {
-            touching = false;
-            delta = x0 - unify(e).pageX;
-            if (delta > 0) {
-                gallery.next()
-            } else if (delta < 0) {
-                gallery.prev()
-            }
-        }
-    }, false);
+    section.addEventListener('mouseout', (e) => {}, false);
     section.addEventListener('mouseup', swipe, false);
     section.addEventListener('touchend', swipe, false);
 
