@@ -8,7 +8,7 @@ function setTranslate(section) {
 
 function defer(setTranslate, pictureWide) {
     setTimeout(() => {
-        section.style.setProperty('transition', "all 200ms ease-out 0s");
+        section.style.setProperty('transition', "all 250ms ease-out 0s");
         setTranslate(pictureWide);
     }, 50);
 }
@@ -45,7 +45,7 @@ function makeInteractive(section) {
     const movePicture = setTranslate(section, pictureWide);
     movePicture(-800);
     setTimeout(() => {
-        section.style.setProperty('transition', "all 200ms ease-out 0s")
+        section.style.setProperty('transition', "all 250ms ease-out 0s")
     });
     let swipePicture = setSwipe(movePicture, numberOfPictures);
     let currentPicture = 1;
@@ -55,18 +55,18 @@ function makeInteractive(section) {
     };
 
     const prev = () => {
+
         currentPicture = swipePicture(pictureWide, "prev");
     };
 
     section.addEventListener('touchstart', lock, false);
     section.addEventListener('mousedown', lock, false);
 
-    section.addEventListener('touchmove', drag, false);
-    section.addEventListener('mousemove', drag, false);
+    document.addEventListener('touchmove', drag, false);
+    document.addEventListener('mousemove', drag, false);
 
-    section.addEventListener('mouseout', (e) => {}, false);
-    section.addEventListener('mouseup', swipe, false);
-    section.addEventListener('touchend', swipe, false);
+    document.addEventListener('mouseup', swipe, false);
+    document.addEventListener('touchend', swipe, false);
 
     function unify(e) {
         return e.changedTouches ? e.changedTouches[0] : e
@@ -77,7 +77,7 @@ function makeInteractive(section) {
 
     function lock(e) {
         e.preventDefault();
-        x0 = unify(e).pageX;
+        x0 = unify(e).clientX;
         touching = true;
     }
 
@@ -85,28 +85,38 @@ function makeInteractive(section) {
     let translateCurrent = -pictureWide;
 
     function drag(e) {
-        e.preventDefault();
         if (touching === true) {
-            delta = x0 - unify(e).pageX;
+            delta = x0 - unify(e).clientX;
             translateCurrent = currentPicture * -pictureWide;
             let translateDrag = translateCurrent - delta;
             section.style.setProperty('transform', `translate3d(${translateDrag}px, 0px, 0px)`);
         }
     }
 
-    const dragLimit = 400;
+    const dragLimit = 300;
 
-    function swipe() {
-        if (x0 || x0 === 0) {
-            if (delta > 0) {
-                if (delta > dragLimit) gallery.next(); else section.style.setProperty('transform', `translate3d(${translateCurrent}px, 0px, 0px)`);
-            } else if (delta < 0) {
-                if (delta < -dragLimit) gallery.prev(); else section.style.setProperty('transform', `translate3d(${translateCurrent}px, 0px, 0px)`);
+    async function swipe() {
+        if (touching === true) {
+            touching = false;
+            if (x0 || x0 === 0) {
+                if (delta > 0) {
+                    if (delta > dragLimit) {
+                        gallery.next()
+                    }
+                    else {
+                        section.style.setProperty('transform', `translate3d(${translateCurrent}px, 0px, 0px)`)
+                    }
+                } else if (delta < 0) {
+                    if (delta < -dragLimit) {
+                        gallery.prev()
+                    }
+                    else {
+                        section.style.setProperty('transform', `translate3d(${translateCurrent}px, 0px, 0px)`)
+                    }
+                }
             }
         }
-        touching = false;
     }
-
     return {next, prev};
 }
 
