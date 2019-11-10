@@ -79,6 +79,7 @@ function makeInteractive(section) {
         e.preventDefault();
         x0 = unify(e).clientX;
         touching = true;
+        section.style.setProperty('cursor', "grabbing");
     }
 
     let delta = null;
@@ -96,6 +97,7 @@ function makeInteractive(section) {
     const dragLimit = 300;
 
     async function swipe() {
+        section.style.setProperty('cursor', "grab");
         if (touching === true) {
             touching = false;
             if (x0 || x0 === 0) {

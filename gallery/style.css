@@ -17,6 +17,7 @@
     max-height: 600px;
     overflow: hidden;
     position: relative;
+    cursor: grab;
 }
 
 .image_section
